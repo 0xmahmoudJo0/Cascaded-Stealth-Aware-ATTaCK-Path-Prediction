@@ -1,0 +1,9 @@
+id: rule-1
+level: high
+tags:
+  - attack.t0001
+detection:
+  selection:
+    field: value
+falsepositives:
+  - fp1

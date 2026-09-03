@@ -1,0 +1,50 @@
+data:
+  sightings_csv: "data/sightings_v2_public.csv"
+  maps_path: "data/id_maps.json"
+  splits:
+    scheme: "temporal"
+    train_end: "2024-06-30"
+    val_end: "2025-03-31"
+model:
+  base: "transformer"
+  ngram_n: 3
+  hidden: 256
+  layers: 4
+  heads: 4
+  dropout: 0.1
+fusion:
+  enabled: true
+  kind: "loglinear"
+  weights_init:
+    w_emb: 0.5
+    w_prior: 0.3
+    w_stealth: 0.3
+    w_ngram: 0.2
+    bias: 0.0
+  lbfgs:
+    reg_l2: 0.1
+    max_iter: 200
+candidates:
+  k_neighbors: 100
+  include_unigram_top: 50
+  max_candidates: 100
+stealth:
+  alpha: 1.0
+priors:
+  half_life_days: 90
+training:
+  batch_size: 256
+  epochs: 20
+  lr: 3e-4
+  seed: 1337
+  device: "auto"
+beam:
+  width: 20
+  max_len: 12
+  length_penalty: 0.3
+eval:
+  metrics: ["hit@1", "hit@5", "hit@10", "mrr", "ndcg", "ece"]
+  bootstrap_samples: 1000
+logging:
+  out_dir: "runs/"
+  save_every: 1
